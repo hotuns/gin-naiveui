@@ -4,24 +4,29 @@
 
 ## 本地运行
 
-#### 运行
+#### 使用 docker 运行
 
-docker 方式
+修改 .env 文件数据库连接参数
 
-```shell
-docker compose -f docker-compose-env.yaml
+```
+DB_PORT=5432
+DB_USER=example_user
+DB_PASSWORD=example_password
+DB_NAME=ginnaive
+SECRET=example_secret
 ```
 
-或者自行修改 .env 文件 Mysql 连接参数，并导入 init.sql 数据库及表结构
+```shell
+docker compose up
+```
+
+docker 启动会自动导入 init.sql ，创建数据库及表结构
+
+在 Dockerfile 中使用了 github.com/air-verse/air@latest 这个库。
+修改 golang 代码之后无需重启，可以热更新。
 
 ##### 运行前端
 
 ```shell
-cd vue-naive-front && npm install && npm run dev
-```
-
-##### 运行后端
-
-```shell
-go run main.go
+cd vue-naive-admin && pnpm install && pnpm run dev
 ```
