@@ -55,7 +55,7 @@ func (auth) Login(c *gin.Context) {
 	})
 }
 
-func (auth) password(c *gin.Context) {
+func (auth) Password(c *gin.Context) {
 	var params inout.AuthPwReq
 	err := c.Bind(&params)
 	if err != nil {
