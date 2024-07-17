@@ -3,13 +3,14 @@ package api
 import (
 	"crypto/md5"
 	"fmt"
+	"gin-naiveui/db"
+	"gin-naiveui/inout"
+	"gin-naiveui/model"
+	"gin-naiveui/utils"
+	"net/http"
+
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
-	"naive-admin-go/db"
-	"naive-admin-go/inout"
-	"naive-admin-go/model"
-	"naive-admin-go/utils"
-	"net/http"
 )
 
 var Auth = &auth{}
@@ -50,7 +51,7 @@ func (auth) Login(c *gin.Context) {
 		return
 	}
 	Resp.Succ(c, inout.LoginRes{
-		AccessToken: utils.GenerateToken(info.ID),
+		AccessToken: utils.GenerateToken(int(info.ID)),
 	})
 }
 
@@ -63,11 +64,11 @@ func (auth) password(c *gin.Context) {
 	}
 	uid, _ := c.Get("uid")
 	var oldCun int64
-	db.Dao.Model(model.User{}).Where("id=? and password=?", uid,fmt.Sprintf("%x", md5.Sum([]byte(params.OldPassword))))
-	if oldCun >0{
+	db.Dao.Model(model.User{}).Where("id=? and password=?", uid, fmt.Sprintf("%x", md5.Sum([]byte(params.OldPassword))))
+	if oldCun > 0 {
 		db.Dao.Model(model.User{}).
-			Where("id=? ",uid).
-			Update("password",fmt.Sprintf("%x", md5.Sum([]byte(params.NewPassword))))
+			Where("id=? ", uid).
+			Update("password", fmt.Sprintf("%x", md5.Sum([]byte(params.NewPassword))))
 	}
 	Resp.Succ(c, true)
 }

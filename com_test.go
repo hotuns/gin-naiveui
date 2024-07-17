@@ -3,9 +3,9 @@ package main
 import (
 	"crypto/md5"
 	"fmt"
-	"naive-admin-go/config"
-	"naive-admin-go/db"
-	"naive-admin-go/model"
+	"gin-naiveui/config"
+	"gin-naiveui/db"
+	"gin-naiveui/model"
 	"testing"
 )
 

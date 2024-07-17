@@ -1,12 +1,18 @@
 package db
 
 import (
-	"gorm.io/driver/mysql"
-	"gorm.io/gorm"
-	"gorm.io/gorm/logger"
+	"fmt"
 	"log"
 	"os"
+	"strconv"
 	"time"
+
+	"gin-naiveui/config"
+	"gin-naiveui/model"
+
+	"gorm.io/driver/postgres"
+	"gorm.io/gorm"
+	"gorm.io/gorm/logger"
 )
 
 var Dao *gorm.DB
@@ -22,16 +28,32 @@ func Init() {
 			LogLevel:                  logger.Info,
 		},
 	)
-	openDb, err := gorm.Open(mysql.Open(os.Getenv("Mysql")),&gorm.Config{
+
+	p := config.Config("DB_PORT")
+	port, err := strconv.ParseUint(p, 10, 32)
+	fmt.Println(port)
+
+	dsn := fmt.Sprintf(
+		"host=naiva_postgres port=%d user=%s password=%s dbname=%s sslmode=disable",
+		port,
+		config.Config("DB_USER"),
+		config.Config("DB_PASSWORD"),
+		config.Config("DB_NAME"),
+	)
+
+	openDb, err := gorm.Open(postgres.Open(dsn), &gorm.Config{
 		Logger:                                   dbLogger,
 		DisableForeignKeyConstraintWhenMigrating: true,
 	})
 	if err != nil {
-		log.Fatalf("db connection error is %s",err.Error())
+		log.Fatalf("db connection error is %s", err.Error())
 	}
-	dbCon,err := openDb.DB()
+
+	openDb.AutoMigrate(&model.User{}, &model.Profile{}, &model.Role{}, &model.Permission{}, &model.UserRolesRole{}, &model.RolePermissionsPermission{})
+
+	dbCon, err := openDb.DB()
 	if err != nil {
-		log.Fatalf("openDb.DB error is  %s",err.Error())
+		log.Fatalf("openDb.DB error is  %s", err.Error())
 	}
 	dbCon.SetMaxIdleConns(3)
 	dbCon.SetMaxOpenConns(10)

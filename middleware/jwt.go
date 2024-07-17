@@ -1,9 +1,10 @@
 package middleware
 
 import (
+	"gin-naiveui/api"
+	"gin-naiveui/utils"
+
 	"github.com/gin-gonic/gin"
-	"naive-admin-go/api"
-	"naive-admin-go/utils"
 )
 
 // JWTAuth 中间件，检查token

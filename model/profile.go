@@ -6,8 +6,8 @@ type Profile struct {
 	Avatar   string `json:"avatar"`
 	Address  string `json:"address"`
 	Email    string `json:"email"`
-	UserId   int    `gorm:"column:userId"`
-	NickName string `gorm:"column:nickName"`
+	UserId   int    `gorm:"column:user_id"`
+	NickName string `gorm:"column:nick_name"`
 }
 
 func (Profile) TableName() string {

@@ -1,11 +1,12 @@
 package router
 
 import (
+	"gin-naiveui/api"
+	"gin-naiveui/middleware"
+
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-contrib/sessions/cookie"
 	"github.com/gin-gonic/gin"
-	"naive-admin-go/api"
-	"naive-admin-go/middleware"
 )
 
 func Init(r *gin.Engine) {

@@ -3,13 +3,13 @@ package api
 import (
 	"crypto/md5"
 	"fmt"
+	"gin-naiveui/db"
+	"gin-naiveui/inout"
+	"gin-naiveui/model"
+	"strconv"
+
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
-	"naive-admin-go/db"
-	"naive-admin-go/inout"
-	"naive-admin-go/model"
-	"strconv"
-	"time"
 )
 
 var User = &user{}
@@ -19,10 +19,14 @@ type user struct {
 
 func (user) Detail(c *gin.Context) {
 	var data = &inout.UserDetailRes{}
+
 	var uid, _ = c.Get("uid")
 	db.Dao.Model(model.User{}).Where("id=?", uid).Find(&data)
-	db.Dao.Model(model.Profile{}).Where("userId=?", uid).Find(&data.Profile)
-	urolIdList := db.Dao.Model(model.UserRolesRole{}).Where("userId=?", uid).Select("roleId")
+	fmt.Println(data)
+
+	db.Dao.Model(model.Profile{}).Where("user_id=?", uid).Find(&data.Profile)
+
+	urolIdList := db.Dao.Model(model.UserRolesRole{}).Where("user_id=?", uid).Select("role_id")
 	db.Dao.Model(model.Role{}).Where("id IN (?)", urolIdList).Find(&data.Roles)
 	if len(data.Roles) > 0 {
 		data.CurrentRole = data.Roles[0]
@@ -47,10 +51,10 @@ func (user) List(c *gin.Context) {
 		orm = orm.Where("gender=?", gender)
 	}
 	if enable != "" {
-		orm = orm.Where("userId in(?)", db.Dao.Model(model.User{}).Where("enable=?", enable).Select("id"))
+		orm = orm.Where("user_id in(?)", db.Dao.Model(model.User{}).Where("enable=?", enable).Select("id"))
 	}
 	if username != "" {
-		orm = orm.Where("nickName like ?", "%"+username+"%")
+		orm = orm.Where("nick_name like ?", "%"+username+"%")
 	}
 
 	orm.Count(&data.Total)
@@ -59,18 +63,18 @@ func (user) List(c *gin.Context) {
 		var uinfo model.User
 		db.Dao.Model(model.User{}).Where("id=?", datum.UserId).First(&uinfo)
 		var rols []*model.Role
-		db.Dao.Model(model.Role{}).Where("id IN (?)", db.Dao.Model(model.UserRolesRole{}).Where("userId=?", datum.UserId).Select("roleId")).Find(&rols)
+		db.Dao.Model(model.Role{}).Where("id IN (?)", db.Dao.Model(model.UserRolesRole{}).Where("user_id=?", datum.UserId).Select("role_id")).Find(&rols)
 		data.PageData = append(data.PageData, inout.UserListItem{
-			ID:         uinfo.ID,
-			Username:   uinfo.Username,
-			Enable:     uinfo.Enable,
-			CreateTime: uinfo.CreateTime,
-			UpdateTime: uinfo.UpdateTime,
-			Gender:     datum.Gender,
-			Avatar:     datum.Avatar,
-			Address:    datum.Address,
-			Email:      datum.Email,
-			Roles:      rols,
+			ID:        int(uinfo.ID),
+			Username:  uinfo.Username,
+			Enable:    uinfo.Enable,
+			CreatedAt: uinfo.CreatedAt,
+			UpdatedAt: uinfo.UpdatedAt,
+			Gender:    datum.Gender,
+			Avatar:    datum.Avatar,
+			Address:   datum.Address,
+			Email:     datum.Email,
+			Roles:     rols,
 		})
 	}
 	Resp.Succ(c, data)
@@ -111,10 +115,10 @@ func (user) Update(c *gin.Context) {
 	}
 	if params.Username != nil {
 		orm.Update("username", *params.Username)
-		db.Dao.Model(model.Profile{}).Where("userId=?", params.Id).Update("nickName", *params.Username)
+		db.Dao.Model(model.Profile{}).Where("user_id=?", params.Id).Update("nickName", *params.Username)
 	}
 	if params.RoleIds != nil {
-		db.Dao.Where("userId=?", params.Id).Delete(model.UserRolesRole{})
+		db.Dao.Where("user_id=?", params.Id).Delete(model.UserRolesRole{})
 		if len(*params.RoleIds) > 0 {
 			for _, i2 := range *params.RoleIds {
 				db.Dao.Model(model.UserRolesRole{}).Create(&model.UserRolesRole{
@@ -137,23 +141,21 @@ func (user) Add(c *gin.Context) {
 	}
 	err = db.Dao.Transaction(func(tx *gorm.DB) error {
 		var newUser = model.User{
-			Username:   params.Username,
-			Password:   fmt.Sprintf("%x", md5.Sum([]byte(params.Password))),
-			Enable:     params.Enable,
-			CreateTime: time.Now(),
-			UpdateTime: time.Now(),
+			Username: params.Username,
+			Password: fmt.Sprintf("%x", md5.Sum([]byte(params.Password))),
+			Enable:   params.Enable,
 		}
 		err = tx.Create(&newUser).Error
 		if err != nil {
 			return err
 		}
 		tx.Create(&model.Profile{
-			UserId:   newUser.ID,
+			UserId:   int(newUser.ID),
 			NickName: newUser.Username,
 		})
 		for _, id := range params.RoleIds {
 			tx.Create(&model.UserRolesRole{
-				UserId: newUser.ID,
+				UserId: int(newUser.ID),
 				RoleId: id,
 			})
 		}
@@ -169,8 +171,8 @@ func (user) Delete(c *gin.Context) {
 	uid := c.Param("id")
 	err := db.Dao.Transaction(func(tx *gorm.DB) error {
 		tx.Where("id =?", uid).Delete(&model.User{})
-		tx.Where("userId =?", uid).Delete(&model.UserRolesRole{})
-		tx.Where("userId =?", uid).Delete(&model.Profile{})
+		tx.Where("user_id =?", uid).Delete(&model.UserRolesRole{})
+		tx.Where("user_id =?", uid).Delete(&model.Profile{})
 		return nil
 	})
 	if err != nil {
