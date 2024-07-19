@@ -22,10 +22,12 @@ SECRET=example_secret
 docker compose up
 ```
 
-docker 启动会自动导入 init.sql ，创建数据库及表结构
+docker中会启动一个数据库，然后把当前golang项目都打包进容器里面运行。
 
 在 Dockerfile 中使用了 github.com/air-verse/air@latest 这个库。
 修改 golang 代码之后无需重启，可以热更新。
+
+如果数据库中没有文件，那么会自动创建初始化数据。
 
 ##### 运行前端
 
