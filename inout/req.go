@@ -56,7 +56,7 @@ type PatchRoleOpeateUserReq struct {
 
 type AddPermissionReq struct {
 	Type      string `json:"type" binding:"required"`
-	ParentId  *int   `json:"parent_id"`
+	ParentId  *int   `json:"parentId"`
 	Name      string `json:"name" binding:"required"`
 	Code      string `json:"code" binding:"required"`
 	Path      string `json:"path"`
@@ -72,15 +72,15 @@ type AddPermissionReq struct {
 type PatchPermissionReq struct {
 	Id        int    `json:"id"  binding:"required"`
 	Type      string `json:"type" binding:"required"`
-	ParentId  *int   `json:"parent_id"`
+	ParentId  *int   `json:"parentId"`
 	Name      string `json:"name" binding:"required"`
 	Code      string `json:"code" binding:"required"`
 	Path      string `json:"path"`
 	Icon      string `json:"icon"`
 	Layout    string `json:"layout"`
 	Component string `json:"component"`
-	Show      int    `json:"show"`
-	Enable    int    `json:"enable"`
-	KeepAlive int    `json:"keepAlive"`
+	Show      bool   `json:"show"`
+	Enable    bool   `json:"enable"`
+	KeepAlive bool   `json:"keepAlive"`
 	Order     int    `json:"order"`
 }

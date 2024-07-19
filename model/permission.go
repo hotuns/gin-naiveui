@@ -11,11 +11,11 @@ type Permission struct {
 	Icon        string       `json:"icon"`
 	Component   string       `json:"component"`
 	Layout      string       `json:"layout"`
-	KeepAlive   int          `json:"keepAlive"`
+	KeepAlive   bool         `json:"keepAlive"`
 	Method      string       `json:"method"`
 	Description string       `json:"description"`
-	Show        int          `json:"show"`
-	Enable      int          `json:"enable"`
+	Show        bool         `json:"show"`
+	Enable      bool         `json:"enable"`
 	SortOrder   int          `json:"sort_order"`
 	Children    []Permission `json:"children" gorm:"-"`
 }

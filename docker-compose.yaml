@@ -2,15 +2,13 @@
 services:
   naiva_postgres:
     image: postgres:alpine
-    container_name: naiva_postgres
     env_file:
       - .env
     restart: on-failure
     ports:
       - ${DB_PORT}:${DB_PORT}
     volumes:
-      - postgres-db:/var/lib/postgresql/data
-      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+      - gin-naive-postgres-db:/var/lib/postgresql/data
     environment:
       - TZ=Asia/Shanghai
       - LANG=C.UTF-8
@@ -20,7 +18,6 @@ services:
   
   gin-api:
     build: .
-    container_name: naiva_api
     restart: on-failure
     env_file:
       - .env
@@ -31,4 +28,4 @@ services:
     command: air cmd/main.go -b 0.0.0.0
 
 volumes:
-  postgres-db:
+  gin-naive-postgres-db:

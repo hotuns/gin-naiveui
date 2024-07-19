@@ -70,9 +70,9 @@ func (permissions) Add(c *gin.Context) {
 		Icon:      params.Icon,
 		Component: params.Component,
 		Layout:    params.Layout,
-		KeepAlive: IsTrue(params.KeepAlive),
-		Show:      IsTrue(params.Show),
-		Enable:    IsTrue(params.Enable),
+		KeepAlive: (params.KeepAlive),
+		Show:      (params.Show),
+		Enable:    (params.Enable),
 		SortOrder: params.Order,
 	}).Error
 	if err != nil {
