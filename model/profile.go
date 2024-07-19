@@ -1,13 +1,13 @@
 package model
 
 type Profile struct {
-	ID       int    `json:"id"`
+	ID       int    `json:"id" gorm:"primaryKey"`
 	Gender   int    `json:"gender"`
 	Avatar   string `json:"avatar"`
 	Address  string `json:"address"`
 	Email    string `json:"email"`
-	UserId   int    `gorm:"column:user_id"`
-	NickName string `gorm:"column:nick_name"`
+	UserId   int    `json:"user_id"`
+	NickName string `json:"nick_name"`
 }
 
 func (Profile) TableName() string {
