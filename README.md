@@ -1,5 +1,7 @@
 # gin-naiveui
 
+![ui](./ui.png)
+
 ## [api 接口](./api.md)
 
 ## 本地运行
