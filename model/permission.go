@@ -1,17 +1,17 @@
 package model
 
 type Permission struct {
-	ID          int          `json:"id"`
+	ID          int          `json:"id" gorm:"primaryKey"`
 	Name        string       `json:"name"`
 	Code        string       `json:"code"`
 	Type        string       `json:"type"`
-	ParentId    *int         `json:"parent_id" gorm:"column:parent_id"`
+	ParentId    *int         `json:"parent_id"`
 	Path        string       `json:"path"`
 	Redirect    string       `json:"redirect"`
 	Icon        string       `json:"icon"`
 	Component   string       `json:"component"`
 	Layout      string       `json:"layout"`
-	KeepAlive   int          `json:"keepAlive" gorm:"column:keep_alive"`
+	KeepAlive   int          `json:"keepAlive"`
 	Method      string       `json:"method"`
 	Description string       `json:"description"`
 	Show        int          `json:"show"`
