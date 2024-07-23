@@ -114,7 +114,7 @@
         <n-form-item-gi
           :span="12"
           label="排序"
-          path="order"
+          path="sortOrder"
           :rule="{
             type: 'number',
             required: true,
@@ -122,7 +122,7 @@
             trigger: ['blur', 'change'],
           }"
         >
-          <n-input-number v-model:value="modalForm.order" />
+          <n-input-number v-model:value="modalForm.sortOrder" />
         </n-form-item-gi>
       </n-grid>
     </n-form>

@@ -1,8 +1,8 @@
 package model
 
 type UserRolesRole struct {
-	UserId int `gorm:"column:user_id"`
-	RoleId int `gorm:"column:role_id"`
+	UserId int `gorm:"column:user_id" json:"userId"`
+	RoleId int `gorm:"column:role_id" json:"roleId"`
 }
 
 func (UserRolesRole) TableName() string {

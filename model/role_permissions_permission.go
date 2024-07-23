@@ -1,8 +1,8 @@
 package model
 
 type RolePermissionsPermission struct {
-	RoleId       int `gorm:"column:role_id"`
-	PermissionId int `gorm:"column:permission_id"`
+	RoleId       int `gorm:"column:role_id" json:"roleId"`
+	PermissionId int `gorm:"column:permission_id" json:"permissionId"`
 }
 
 func (RolePermissionsPermission) TableName() string {

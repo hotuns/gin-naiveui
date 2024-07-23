@@ -1,6 +1,6 @@
 # 运行环境容器
 services:
-  naiva_postgres:
+  gin_naiva_postgres:
     image: postgres:alpine
     env_file:
       - .env
@@ -16,7 +16,7 @@ services:
       - POSTGRES_USER=${DB_USER}
       - POSTGRES_PASSWORD=${DB_PASSWORD}
   
-  gin-api:
+  gingin_naiva_api:
     build: .
     restart: on-failure
     env_file:
