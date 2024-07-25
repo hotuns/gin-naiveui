@@ -32,14 +32,7 @@ func (role) PermissionsTree(c *gin.Context) {
 	orm.Find(&onePermissList)
 
 	for i, perm := range onePermissList {
-		var twoPerissList []model.Permission
-		db.Dao.Model(model.Permission{}).Where("parent_id = ?", perm.ID).Order("sort_order Asc").Find(&twoPerissList)
-		for i2, perm2 := range twoPerissList {
-			var twoPerissList2 []model.Permission
-			db.Dao.Model(model.Permission{}).Where("parent_id = ?", perm2.ID).Order("sort_order Asc").Find(&twoPerissList2)
-			twoPerissList[i2].Children = twoPerissList2
-		}
-		onePermissList[i].Children = twoPerissList
+		onePermissList[i].Children = getChildren(uint(perm.ID))
 	}
 	Resp.Succ(c, onePermissList)
 }
