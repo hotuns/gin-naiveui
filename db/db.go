@@ -133,7 +133,7 @@ func CreateInitData(db *gorm.DB) {
 			Code:      "RoleUser",
 			Type:      "MENU",
 			ParentId:  intPointer(3),
-			Path:      "/pms/role/user/:role_id",
+			Path:      "/pms/role/user/:roleId",
 			Icon:      "i-fe:user-plus",
 			Component: "/src/views/pms/role/role-user.vue",
 			Show:      false,
