@@ -84,6 +84,7 @@ func (permissions) Add(c *gin.Context) {
 		Resp.Err(c, 20001, err.Error())
 		return
 	}
+
 	Resp.Succ(c, "")
 }
 func (permissions) Delete(c *gin.Context) {
@@ -125,6 +126,11 @@ func (permissions) PatchPermission(c *gin.Context) {
 		Resp.Err(c, 20001, err.Error())
 		return
 	}
+
+	if !params.Show {
+		db.Dao.Model(model.Permission{}).Where("id=?", params.Id).Update("show", false)
+	}
+
 	Resp.Succ(c, "")
 
 }
