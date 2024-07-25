@@ -73,7 +73,7 @@ func (permissions) Add(c *gin.Context) {
 		KeepAlive: (params.KeepAlive),
 		Show:      (params.Show),
 		Enable:    (params.Enable),
-		SortOrder: params.Order,
+		SortOrder: params.SortOrder,
 	}).Error
 	if err != nil {
 		Resp.Err(c, 20001, err.Error())
@@ -101,7 +101,6 @@ func (permissions) PatchPermission(c *gin.Context) {
 		Resp.Err(c, 20001, err.Error())
 		return
 	}
-
 	err = db.Dao.Model(model.Permission{}).Where("id=?", params.Id).Updates(model.Permission{
 		Name:      params.Name,
 		Code:      params.Code,
@@ -115,7 +114,7 @@ func (permissions) PatchPermission(c *gin.Context) {
 		Method:    params.Component,
 		Show:      params.Show,
 		Enable:    params.Enable,
-		SortOrder: params.Order,
+		SortOrder: params.SortOrder,
 	}).Error
 	if err != nil {
 		Resp.Err(c, 20001, err.Error())
@@ -123,10 +122,4 @@ func (permissions) PatchPermission(c *gin.Context) {
 	}
 	Resp.Succ(c, "")
 
-}
-func IsTrue(v bool) int {
-	if v {
-		return 1
-	}
-	return 0
 }

@@ -65,16 +65,16 @@ func (user) List(c *gin.Context) {
 		var rols []*model.Role
 		db.Dao.Model(model.Role{}).Where("id IN (?)", db.Dao.Model(model.UserRolesRole{}).Where("user_id=?", datum.UserId).Select("role_id")).Find(&rols)
 		data.PageData = append(data.PageData, inout.UserListItem{
-			ID:        int(uinfo.ID),
-			Username:  uinfo.Username,
-			Enable:    uinfo.Enable,
-			CreatedAt: uinfo.CreatedAt,
-			UpdatedAt: uinfo.UpdatedAt,
-			Gender:    datum.Gender,
-			Avatar:    datum.Avatar,
-			Address:   datum.Address,
-			Email:     datum.Email,
-			Roles:     rols,
+			ID:          int(uinfo.ID),
+			Username:    uinfo.Username,
+			Enable:      uinfo.Enable,
+			CreatedTime: uinfo.CreateTime,
+			UpdatedTime: uinfo.UpdateTime,
+			Gender:      datum.Gender,
+			Avatar:      datum.Avatar,
+			Address:     datum.Address,
+			Email:       datum.Email,
+			Roles:       rols,
 		})
 	}
 	Resp.Succ(c, data)

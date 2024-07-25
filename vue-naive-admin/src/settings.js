@@ -43,7 +43,7 @@ export const basePermissions = [
     name: '外链',
     type: 'MENU',
     icon: 'i-fe:external-link',
-    order: 98,
+    sortOrder: 98,
     enable: true,
     show: true,
     children: [
@@ -53,7 +53,7 @@ export const basePermissions = [
         type: 'MENU',
         path: 'https://juejin.cn/user/1961184475483255',
         icon: 'i-simple-icons:juejin',
-        order: 1,
+        sortOrder: 1,
         enable: true,
         show: true,
       },

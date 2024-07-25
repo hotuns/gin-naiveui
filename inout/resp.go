@@ -19,16 +19,16 @@ type UserDetailRes struct {
 type RoleListRes []*model.Role
 
 type UserListItem struct {
-	ID        int           `json:"id"`
-	Username  string        `json:"username"`
-	Enable    bool          `json:"enable"`
-	CreatedAt time.Time     `json:"createTime"`
-	UpdatedAt time.Time     `json:"updateTime"`
-	Gender    int           `json:"gender"`
-	Avatar    string        `json:"avatar"`
-	Address   string        `json:"address"`
-	Email     string        `json:"email"`
-	Roles     []*model.Role `json:"roles"`
+	ID          int           `json:"id"`
+	Username    string        `json:"username"`
+	Enable      bool          `json:"enable"`
+	CreatedTime time.Time     `json:"createTime"`
+	UpdatedTime time.Time     `json:"updateTime"`
+	Gender      int           `json:"gender"`
+	Avatar      string        `json:"avatar"`
+	Address     string        `json:"address"`
+	Email       string        `json:"email"`
+	Roles       []*model.Role `json:"roles"`
 }
 type UserListRes struct {
 	PageData []UserListItem `json:"pageData"`

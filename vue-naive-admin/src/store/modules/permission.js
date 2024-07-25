@@ -32,7 +32,7 @@ export const usePermissionStore = defineStore('permission', {
         .filter((item) => item.type === 'MENU')
         .map((item) => this.getMenuItem(item))
         .filter((item) => !!item)
-        .sort((a, b) => a.order - b.order)
+        .sort((a, b) => a.sortOrder - b.sortOrder)
     },
     getMenuItem(item, parent) {
       const route = this.generateRoute(item, item.show ? null : parent?.key)
@@ -43,14 +43,14 @@ export const usePermissionStore = defineStore('permission', {
         key: route.name,
         path: route.path,
         icon: () => h('i', { class: `${route.meta.icon}?mask text-16` }),
-        order: item.order ?? 0,
+        sortOrder: item.sortOrder ?? 0,
       }
       const children = item.children?.filter((item) => item.type === 'MENU') || []
       if (children.length) {
         menuItem.children = children
           .map((child) => this.getMenuItem(child, menuItem))
           .filter((item) => !!item)
-          .sort((a, b) => a.order - b.order)
+          .sort((a, b) => a.sortOrder - b.sortOrder)
         if (!menuItem.children.length) delete menuItem.children
       }
       return menuItem

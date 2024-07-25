@@ -108,9 +108,10 @@ const isLogined = computed(() => {
   return authStore.accessToken && userStore.roles
 })
 
+// 记得删掉这个默认账号密码
 const loginInfo = ref({
-  username: '',
-  password: '',
+  username: 'admin',
+  password: 'password',
 })
 function initLoginInfo() {
   const localLoginInfo = lStorage.get('loginInfo')

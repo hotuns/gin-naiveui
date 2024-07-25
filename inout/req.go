@@ -66,7 +66,7 @@ type AddPermissionReq struct {
 	Show      bool   `json:"show"`
 	Enable    bool   `json:"enable"`
 	KeepAlive bool   `json:"keepAlive"`
-	Order     int    `json:"order"`
+	SortOrder int    `json:"sortOrder" binding:"required"`
 }
 
 type PatchPermissionReq struct {
@@ -82,5 +82,5 @@ type PatchPermissionReq struct {
 	Show      bool   `json:"show"`
 	Enable    bool   `json:"enable"`
 	KeepAlive bool   `json:"keepAlive"`
-	Order     int    `json:"order"`
+	SortOrder int    `json:"sortOrder" binding:"required"`
 }
