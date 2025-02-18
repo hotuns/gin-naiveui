@@ -1,20 +1,26 @@
 # 运行环境容器
 services:
-  gin_naiva_postgres:
-    image: postgres:alpine
+  gin_naiva_mysql:
+    image: mysql:8.0
     env_file:
       - .env
     restart: on-failure
     ports:
       - ${DB_PORT}:${DB_PORT}
     volumes:
-      - gin-naive-postgres-db:/var/lib/postgresql/data
+      - ./db-data:/var/lib/mysql
     environment:
       - TZ=Asia/Shanghai
       - LANG=C.UTF-8
-      - POSTGRES_DB=${DB_NAME}
-      - POSTGRES_USER=${DB_USER}
-      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - MYSQL_DATABASE=${DB_NAME}
+      - MYSQL_USER=${DB_USER}
+      - MYSQL_PASSWORD=${DB_PASSWORD}
+      - MYSQL_ROOT_PASSWORD=${DB_PASSWORD}
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
   
   gingin_naiva_api:
     build: .
@@ -26,6 +32,6 @@ services:
     volumes:
       - .:/usr/src/some-api
     command: air cmd/main.go -b 0.0.0.0
-
-volumes:
-  gin-naive-postgres-db:
+    depends_on:
+      gin_naiva_mysql:
+        condition: service_healthy

@@ -32,5 +32,5 @@ docker中会启动一个数据库，然后把当前golang项目都打包进容�
 ##### 运行前端
 
 ```shell
-cd vue-naive-admin && pnpm install && pnpm run dev
+cd web && pnpm install && pnpm run dev
 ```

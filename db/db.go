@@ -4,13 +4,12 @@ import (
 	"fmt"
 	"log"
 	"os"
-	"strconv"
 	"time"
 
 	"gin-naiveui/config"
 	"gin-naiveui/model"
 
-	"gorm.io/driver/postgres"
+	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
 )
@@ -29,20 +28,19 @@ func Init() {
 		},
 	)
 
-	p := config.Config("DB_PORT")
-	port, _ := strconv.ParseUint(p, 10, 32)
-	fmt.Println(port)
+	port := config.Config("DB_PORT")
 
 	dsn := fmt.Sprintf(
-		"host=%s port=%d user=%s password=%s dbname=%s sslmode=disable",
-		config.Config("DB_HOST"),
-		port,
+		"%s:%s@tcp(%s:%s)/%s?charset=utf8mb4&parseTime=True&loc=Local",
 		config.Config("DB_USER"),
 		config.Config("DB_PASSWORD"),
+		config.Config("DB_HOST"),
+		port,
 		config.Config("DB_NAME"),
 	)
+	fmt.Println(dsn)
 
-	openDb, err := gorm.Open(postgres.Open(dsn), &gorm.Config{
+	openDb, err := gorm.Open(mysql.Open(dsn), &gorm.Config{
 		Logger:                                   dbLogger,
 		DisableForeignKeyConstraintWhenMigrating: true,
 	})
@@ -258,7 +256,7 @@ func CreateInitData(db *gorm.DB) {
 	profiles := []model.Profile{
 		{
 			Gender:   0,
-			Avatar:   "https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif?imageView2/1/w/80/h/80",
+			Avatar:   "",
 			UserId:   1,
 			NickName: "Admin",
 		},
@@ -293,9 +291,11 @@ func CreateInitData(db *gorm.DB) {
 
 	users := []model.User{
 		{
-			Username: "admin",
-			Password: "5f4dcc3b5aa765d61d8327deb882cf99", // 密码经过 MD5 加密
-			Enable:   true,
+			CreateTime: time.Now(),
+			UpdateTime: time.Now(),
+			Username:   "admin",
+			Password:   "5f4dcc3b5aa765d61d8327deb882cf99", // 密码经过 MD5 加密
+			Enable:     true,
 		},
 	}
 
