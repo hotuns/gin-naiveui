@@ -5,24 +5,29 @@ type LoginReq struct {
 	Password string `form:"password" binding:"required"`
 	Captcha  string `form:"captcha" binding:"required"`
 }
+
 type AuthPwReq struct {
 	NewPassword string `form:"newPassword" binding:"required"`
 	OldPassword string `form:"oldPassword" binding:"required"`
 }
+
 type PatchUserReq struct {
-	Id       int     `json:"id"  binding:"required"`
+	Id       int     `json:"id" binding:"required"`
 	Enable   *bool   `json:"enable,omitempty"`
 	RoleIds  *[]int  `json:"roleIds,omitempty"`
 	Password *string `json:"password,omitempty"`
 	Username *string `json:"username,omitempty"`
 }
+
 type PatchProfileUserReq struct {
-	Id       int    `json:"id"  binding:"required"`
+	Id       int    `json:"id" binding:"required"`
+	Avatar   string `json:"avatar"`
 	Gender   int    `json:"gender"`
 	NickName string `json:"nickName"`
 	Address  string `json:"address"`
 	Email    string `json:"email"`
 }
+
 type EnableRoleReq struct {
 	Enable bool `json:"enable" binding:"required"`
 	Id     int  `json:"id"`
@@ -41,8 +46,9 @@ type AddRoleReq struct {
 	Name          string `json:"name" binding:"required"`
 	PermissionIds []int  `json:"permissionIds"`
 }
+
 type PatchRoleReq struct {
-	Id            int     `json:"id"  binding:"required"`
+	Id            int     `json:"id" binding:"required"`
 	Code          *string `json:"code,omitempty"`
 	Enable        *bool   `json:"enable,omitempty"`
 	Name          *string `json:"name,omitempty"`
@@ -50,7 +56,7 @@ type PatchRoleReq struct {
 }
 
 type PatchRoleOpeateUserReq struct {
-	Id      int   `json:"id" `
+	Id      int   `json:"id"`
 	UserIds []int `json:"userIds"`
 }
 
@@ -70,7 +76,7 @@ type AddPermissionReq struct {
 }
 
 type PatchPermissionReq struct {
-	Id        int    `json:"id"  binding:"required"`
+	Id        int    `json:"id" binding:"required"`
 	Type      string `json:"type" binding:"required"`
 	ParentId  *int   `json:"parentId"`
 	Name      string `json:"name" binding:"required"`

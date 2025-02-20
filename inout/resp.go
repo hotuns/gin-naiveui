@@ -10,9 +10,12 @@ type LoginRes struct {
 }
 
 type UserDetailRes struct {
-	model.User
+	ID       int    `json:"id"`
+	Username string `json:"username" binding:"required"`
+	Enable   bool   `json:"enable" binding:"required"`
+
 	Profile     *model.Profile `json:"profile"`
-	Roles       []*model.Role  `json:"roles" `
+	Roles       []*model.Role  `json:"roles"`
 	CurrentRole *model.Role    `json:"currentRole"`
 }
 
@@ -30,14 +33,17 @@ type UserListItem struct {
 	Email       string        `json:"email"`
 	Roles       []*model.Role `json:"roles"`
 }
+
 type UserListRes struct {
 	PageData []UserListItem `json:"pageData"`
 	Total    int64          `json:"total"`
 }
+
 type RoleListPageItem struct {
 	model.Role
 	PermissionIds []int64 `json:"permissionIds" gorm:"-"`
 }
+
 type RoleListPageRes struct {
 	PageData []RoleListPageItem `json:"pageData"`
 	Total    int64              `json:"total"`

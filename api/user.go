@@ -88,16 +88,18 @@ func (user) Profile(c *gin.Context) {
 		return
 	}
 	err = db.Dao.Model(model.Profile{}).Where("id=?", params.Id).Updates(model.Profile{
+		Avatar:   params.Avatar,
 		Gender:   params.Gender,
 		Address:  params.Address,
 		Email:    params.Email,
 		NickName: params.NickName,
 	}).Error
+
 	if err != nil {
 		Resp.Err(c, 20001, err.Error())
 		return
 	}
-	Resp.Succ(c, err)
+	Resp.Succ(c, "")
 }
 func (user) Update(c *gin.Context) {
 	var params inout.PatchUserReq

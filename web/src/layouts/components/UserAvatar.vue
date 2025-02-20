@@ -31,12 +31,12 @@ const options = reactive([
     icon: () => h('i', { class: 'i-material-symbols:person-outline text-14' }),
     show: computed(() => permissionStore.accessRoutes?.some((item) => item.path === '/profile')),
   },
-  {
-    label: '切换角色',
-    key: 'toggleRole',
-    icon: () => h('i', { class: 'i-basil:exchange-solid text-14' }),
-    show: computed(() => userStore.roles.length > 1),
-  },
+  // {
+  //   label: '切换角色',
+  //   key: 'toggleRole',
+  //   icon: () => h('i', { class: 'i-basil:exchange-solid text-14' }),
+  //   show: computed(() => userStore.roles.length > 1),
+  // },
   {
     label: '退出登录',
     key: 'logout',
