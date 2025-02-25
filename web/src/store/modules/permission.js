@@ -18,6 +18,7 @@ export const usePermissionStore = defineStore('permission', {
   },
   actions: {
     async initPermissions() {
+      console.log('initPermissions')
       const { data } = (await api.getRolePermissions()) || []
       this.asyncPermissions = data
       this.menus = this.permissions

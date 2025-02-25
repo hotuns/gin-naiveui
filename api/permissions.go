@@ -134,3 +134,29 @@ func (permissions) PatchPermission(c *gin.Context) {
 	Resp.Succ(c, "")
 
 }
+func (permissions) ValidateMenuPath(c *gin.Context) {
+	path := c.Query("path")
+	if path == "" {
+		Resp.Err(c, 20001, "path is required")
+		return
+	}
+
+	var menus []model.Permission
+	// 获取所有类型为MENU的权限记录
+	err := db.Dao.Model(model.Permission{}).Where("type = ?", "MENU").Find(&menus).Error
+	if err != nil {
+		Resp.Err(c, 20001, err.Error())
+		return
+	}
+
+	// 检查是否存在匹配的菜单路径
+	hasMenu := false
+	for _, menu := range menus {
+		if menu.Path == path {
+			hasMenu = true
+			break
+		}
+	}
+
+	Resp.Succ(c, hasMenu)
+}

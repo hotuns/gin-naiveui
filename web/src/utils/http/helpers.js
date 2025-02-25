@@ -4,6 +4,7 @@ let isConfirming = false
 export function resolveResError(code, message) {
   switch (code) {
     case 401:
+    case 10002:
       if (isConfirming) return
       isConfirming = true
       $dialog.confirm({
