@@ -108,16 +108,19 @@ func (user) Update(c *gin.Context) {
 		Resp.Err(c, 20001, err.Error())
 		return
 	}
-	orm := db.Dao.Model(model.User{}).Where("id=?", params.Id)
+	updates := map[string]interface{}{}
 	if params.Password != nil {
-		orm.Update("password", fmt.Sprintf("%x", md5.Sum([]byte(*params.Password))))
+		updates["password"] = fmt.Sprintf("%x", md5.Sum([]byte(*params.Password)))
 	}
 	if params.Enable != nil {
-		orm.Update("enable", *params.Enable)
+		updates["enable"] = *params.Enable
 	}
 	if params.Username != nil {
-		orm.Update("username", *params.Username)
+		updates["username"] = *params.Username
 		db.Dao.Model(model.Profile{}).Where("user_id=?", params.Id).Update("nickName", *params.Username)
+	}
+	if len(updates) > 0 {
+		db.Dao.Model(model.User{}).Where("id=?", params.Id).Updates(updates)
 	}
 	if params.RoleIds != nil {
 		db.Dao.Where("user_id=?", params.Id).Delete(model.UserRolesRole{})
@@ -130,7 +133,6 @@ func (user) Update(c *gin.Context) {
 			}
 		}
 	}
-
 	Resp.Succ(c, err)
 }
 

@@ -80,15 +80,18 @@ func (role) Update(c *gin.Context) {
 		Resp.Err(c, 20001, err.Error())
 		return
 	}
-	orm := db.Dao.Model(model.Role{}).Where("id=?", params.Id)
+	updates := map[string]interface{}{}
 	if params.Name != nil {
-		orm.Update("name", *params.Name)
+		updates["name"] = *params.Name
 	}
 	if params.Enable != nil {
-		orm.Update("enable", *params.Enable)
+		updates["enable"] = *params.Enable
 	}
 	if params.Code != nil {
-		orm.Update("code", *params.Code)
+		updates["code"] = *params.Code
+	}
+	if len(updates) > 0 {
+		db.Dao.Model(model.Role{}).Where("id=?", params.Id).Updates(updates)
 	}
 	if params.PermissionIds != nil {
 		db.Dao.Where("role_id=?", params.Id).Delete(model.RolePermissionsPermission{})
